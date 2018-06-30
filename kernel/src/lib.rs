@@ -17,6 +17,9 @@ extern crate tock_regs;
 pub use tock_regs::{register_bitfields, register_bitmasks};
 
 #[macro_use]
+extern crate memoffset;
+
+#[macro_use]
 pub mod common;
 #[macro_use]
 pub mod debug;
@@ -49,5 +52,5 @@ pub use sched::kernel_loop;
 // functions and types are used by board files to setup the platform and setup
 // processes.
 pub mod procs {
-    pub use process::{load_processes, FaultResponse, Process};
+    pub use process::{load_processes, FaultResponse, Process, Offsets};
 }

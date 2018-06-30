@@ -168,6 +168,7 @@ impl From<Error> for ReturnCode {
     }
 }
 
+#[repr(u8)]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum State {
     Running,
@@ -641,6 +642,7 @@ struct ProcessDebug {
     restart_count: Cell<usize>,
 }
 
+#[repr(C)]
 pub struct Process<'a> {
     /// Application memory layout:
     ///
@@ -728,6 +730,31 @@ pub struct Process<'a> {
 
     /// Values kept so that we can print useful debug messages when apps fault.
     debug: ProcessDebug,
+}
+
+/// Contains offsets to `Process` fields.
+///
+/// Meant to aid thread-aware debuggers.
+#[repr(C)]
+pub struct Offsets {
+    pub memory: u32,
+    pub kernel_memory_break: u32,
+    pub original_kernel_memory_break: u32,
+    pub app_break: u32,
+    pub original_app_break: u32,
+    pub current_stack_pointer: u32,
+    pub original_stack_pointer: u32,
+    pub flash: u32,
+    pub header: u32,
+    pub stored_regs: u32,
+    pub yield_pc: u32,
+    pub psr: u32,
+    pub state: u32,
+    pub fault_response: u32,
+    pub mpu_regions: u32,
+    pub tasks: u32,
+    pub package_name: u32,
+    pub debug: u32,
 }
 
 // Stores the current number of callbacks enqueued + processes in Running state
@@ -1734,5 +1761,28 @@ impl<'a> Process<'a> {
         let _ = writer.write_fmt(format_args!(
             "\r\n in the app's folder and open the .lst file.\r\n\r\n"
         ));
+    }
+
+    pub fn offsets() -> Offsets {
+        Offsets {
+            memory: offset_of!(Self, memory) as u32,
+            kernel_memory_break: offset_of!(Self, kernel_memory_break) as u32,
+            original_kernel_memory_break: offset_of!(Self, original_kernel_memory_break) as u32,
+            app_break: offset_of!(Self, app_break) as u32,
+            original_app_break: offset_of!(Self, original_app_break) as u32,
+            current_stack_pointer: offset_of!(Self, current_stack_pointer) as u32,
+            original_stack_pointer: offset_of!(Self, original_stack_pointer) as u32,
+            flash: offset_of!(Self, flash) as u32,
+            header: offset_of!(Self, header) as u32,
+            stored_regs: offset_of!(Self, stored_regs) as u32,
+            yield_pc: offset_of!(Self, yield_pc) as u32,
+            psr: offset_of!(Self, psr) as u32,
+            state: offset_of!(Self, state) as u32,
+            fault_response: offset_of!(Self, fault_response) as u32,
+            mpu_regions: offset_of!(Self, mpu_regions) as u32,
+            tasks: offset_of!(Self, tasks) as u32,
+            package_name: offset_of!(Self, package_name) as u32,
+            debug: offset_of!(Self, debug) as u32,
+        }
     }
 }

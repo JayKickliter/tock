@@ -1,6 +1,9 @@
 [[package]]
 name = "cortexm"
 version = "0.1.0"
+dependencies = [
+ "kernel 0.1.0",
+]
 
 [[package]]
 name = "cortexm4"
@@ -13,6 +16,15 @@ dependencies = [
 [[package]]
 name = "kernel"
 version = "0.1.0"
+dependencies = [
+ "memoffset 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tock-regs 0.1.0",
+]
+
+[[package]]
+name = "memoffset"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "nrf52"
@@ -30,3 +42,9 @@ dependencies = [
  "kernel 0.1.0",
 ]
 
+[[package]]
+name = "tock-regs"
+version = "0.1.0"
+
+[metadata]
+"checksum memoffset 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "0f9dc261e2b62d7a622bf416ea3c5245cdd5d9a7fcc428c0d06804dfce1775b3"

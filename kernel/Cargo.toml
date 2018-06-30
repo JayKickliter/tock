@@ -5,3 +5,4 @@ authors = ["Tock Project Developers <tock-dev@googlegroups.com>"]
 
 [dependencies]
 tock-regs = { path = "../tools/tock-register-interface" }
+memoffset = "0.2.1"
